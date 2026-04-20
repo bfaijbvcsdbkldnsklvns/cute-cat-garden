@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🐱 小猫咪的秘密花园</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #FFF9C4 0%, #FFE082 50%, #FFD54F 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header {
+            margin-top: 40px;
+            margin-bottom: 30px;
+        }
+
+        .title {
+            font-size: 28px;
+            color: #F57C00;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #FF8F00;
+            opacity: 0.9;
+        }
+
+        .cat-container {
+            position: relative;
+            margin: 30px auto;
+            width: 200px;
+            height: 200px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .cat-container:hover {
+            transform: scale(1.05);
+        }
+
+        .cat {
+            font-size: 120px;
+            animation: float 3s ease-in-out infinite;
+            user-select: none;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 30px;
+            opacity: 0;
+            animation: heartFloat 2s ease-out forwards;
+            pointer-events: none;
+        }
+
+        @keyframes heartFloat {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(0);
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(-50px) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100px) scale(0.5);
+            }
+        }
+
+        .message-box {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin: 30px auto;
+            box-shadow: 0 10px 30px rgba(255, 193, 7, 0.3);
+            max-width: 400px;
+            position: relative;
+        }
+
+        .message-box::before {
+            content: '💛';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 30px;
+        }
+
+        .message {
+            font-size: 18px;
+            color: #F57C00;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .click-hint {
+            font-size: 14px;
+            color: #FFB300;
+            opacity: 0.7;
+            margin-top: 10px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px auto;
+            max-width: 350px;
+        }
+
+        .stat-item {
+            background: white;
+            border-radius: 15px;
+            padding: 15px 20px;
+            box-shadow: 0 5px 15px rgba(255, 193, 7, 0.2);
+        }
+
+        .stat-number {
+            font-size: 24px;
+            color: #F57C00;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #FFB300;
+            margin-top: 5px;
+        }
+
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .floating-item {
+            position: absolute;
+            font-size: 30px;
+            animation: floatRandom 15s infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes floatRandom {
+            0%, 100% {
+                transform: translateY(100vh) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-100px) rotate(180deg);
+            }
+        }
+
+        .secret-message {
+            display: none;
+            background: linear-gradient(135deg, #FFF59D 0%, #FFE082 100%);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 30px auto;
+            box-shadow: 0 10px 30px rgba(255, 193, 7, 0.4);
+            max-width: 400px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .secret-title {
+            font-size: 22px;
+            color: #F57C00;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .secret-text {
+            font-size: 16px;
+            color: #FF8F00;
+            line-height: 1.8;
+        }
+
+        .paw-prints {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            font-size: 20px;
+            opacity: 0.3;
+        }
+
+        .sun {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            font-size: 50px;
+            animation: rotate 20s linear infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .button {
+            background: linear-gradient(135deg, #FFD54F 0%, #FFB300 100%);
+            border: none;
+            border-radius: 25px;
+            padding: 15px 30px;
+            font-size: 16px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 179, 0, 0.4);
+            transition: all 0.3s ease;
+            margin: 10px;
+        }
+
+        .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 179, 0, 0.5);
+        }
+
+        .button:active {
+            transform: translateY(0);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-elements" id="floatingElements"></div>
+    
+    <div class="sun">☀️</div>
+    
+    <div class="container">
+        <div class="header">
+            <div class="title">🐱 小猫咪的秘密花园 💛</div>
+            <div class="subtitle">点击猫咪，收获惊喜</div>
+        </div>
+
+        <div class="cat-container" id="catContainer" onclick="clickCat()">
+            <div class="cat">🐱</div>
+        </div>
+
+        <div class="message-box">
+            <div class="message" id="message">
+                嗨！我是小猫咪~<br>
+                点击我，我会给你变魔术哦！✨
+            </div>
+            <div class="click-hint">已点击 <span id="clickCount">0</span> 次</div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number" id="hearts">0</div>
+                <div class="stat-label">收集的爱心</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="stars">0</div>
+                <div class="stat-label">收集的星星</div>
+            </div>
+        </div>
+
+        <div class="secret-message" id="secretMessage">
+            <div class="secret-title">🌟 解锁秘密消息 🌟</div>
+            <div class="secret-text" id="secretText">
+                恭喜你发现了秘密！<br>
+                这个小花园是为你准备的 💛
+            </div>
+        </div>
+
+        <button class="button" onclick="changeMessage()">换一条消息</button>
+        <button class="button" onclick="showSecret()">查看秘密</button>
+    </div>
+
+    <div class="paw-prints">🐾</div>
+
+    <script>
+        let clickCount = 0;
+        let hearts = 0;
+        let stars = 0;
+
+        const messages = [
+            "今天也要开心哦！🐱",
+            "你笑起来真好看~",
+            "小猫咪想你了 💛",
+            "今天天气真好，适合想你",
+            "你是最可爱的人！",
+            "小猫咪给你比心~ 💕",
+            "希望你今天也元气满满！",
+            "你值得所有美好的事物 ✨",
+            "小猫咪永远支持你！",
+            "你的笑容是我的阳光 ☀️"
+        ];
+
+        const secretMessages = [
+            "这个页面是专门为你做的 💛<br>希望你喜欢",
+            "每一只猫咪都代表一个想念<br>点击它们，收获爱",
+            "黄色是温暖的颜色<br>就像你给我的感觉",
+            "小猫咪的秘密：<br>其实我很喜欢你 🐱💕",
+            "这个花园永远为你开放<br>随时欢迎回来"
+        ];
+
+        // 创建漂浮元素
+        function createFloatingElements() {
+            const container = document.getElementById('floatingElements');
+            const items = ['🐱', '💛', '✨', '🌸', '⭐', '🌻'];
+            
+            for (let i = 0; i < 15; i++) {
+                const item = document.createElement('div');
+                item.className = 'floating-item';
+                item.textContent = items[Math.floor(Math.random() * items.length)];
+                item.style.left = Math.random() * 100 + '%';
+                item.style.animationDelay = Math.random() * 15 + 's';
+                item.style.animationDuration = (15 + Math.random() * 10) + 's';
+                container.appendChild(item);
+            }
+        }
+
+        // 点击猫咪
+        function clickCat() {
+            clickCount++;
+            document.getElementById('clickCount').textContent = clickCount;
+
+            // 随机增加爱心或星星
+            if (Math.random() > 0.5) {
+                hearts++;
+                document.getElementById('hearts').textContent = hearts;
+                createHeart('💕');
+            } else {
+                stars++;
+                document.getElementById('stars').textContent = stars;
+                createHeart('⭐');
+            }
+
+            // 每10次点击显示特殊消息
+            if (clickCount % 10 === 0) {
+                showMessage("哇！你已经点击了 " + clickCount + " 次！<br>小猫咪超级感动！💛");
+            }
+        }
+
+        // 创建飘动的爱心
+        function createHeart(emoji) {
+            const container = document.getElementById('catContainer');
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.textContent = emoji;
+            heart.style.left = Math.random() * 150 + 'px';
+            heart.style.top = Math.random() * 100 + 'px';
+            container.appendChild(heart);
+
+            setTimeout(() => heart.remove(), 2000);
+        }
+
+        // 显示消息
+        function showMessage(msg) {
+            document.getElementById('message').innerHTML = msg;
+        }
+
+        // 换消息
+        function changeMessage() {
+            const randomMsg = messages[Math.floor(Math.random() * messages.length)];
+            showMessage(randomMsg);
+        }
+
+        // 显示秘密
+        function showSecret() {
+            const secretDiv = document.getElementById('secretMessage');
+            const secretText = document.getElementById('secretText');
+            
+            if (secretDiv.style.display === 'block') {
+                secretDiv.style.display = 'none';
+            } else {
+                const randomSecret = secretMessages[Math.floor(Math.random() * secretMessages.length)];
+                secretText.innerHTML = randomSecret;
+                secretDiv.style.display = 'block';
+            }
+        }
+
+        // 初始化
+        createFloatingElements();
+
+        // 显示欢迎消息
+        setTimeout(() => {
+            showMessage("欢迎来到小猫咪的秘密花园！<br>点击我试试看~ 🐱");
+        }, 1000);
+    </script>
+</body>
+</html>
