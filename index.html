@@ -3,508 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🐱 小猫咪的秘密花园</title>
+    <title>🐱 小猫咪的秘密花园 & 🗑️ 丢掉烦恼</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background: linear-gradient(135deg, #FFF9C4 0%, #FFE082 50%, #FFD54F 100%);
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        .container {
-            max-width: 500px;
-            margin: 0 auto;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .header {
-            margin-top: 30px;
-            margin-bottom: 20px;
-        }
-
-        .title {
-            font-size: 26px;
-            color: #F57C00;
-            font-weight: bold;
-            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);
-            margin-bottom: 10px;
-        }
-
-        .subtitle {
-            font-size: 15px;
-            color: #FF8F00;
-            opacity: 0.9;
-        }
-
-        /* 猫咪容器 - 带花 */
-        .cat-scene {
-            position: relative;
-            margin: 20px auto;
-            width: 220px;
-            height: 240px;
-        }
-
-        .cat-container {
-            position: relative;
-            width: 200px;
-            height: 200px;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-            margin: 0 auto;
-        }
-
-        .cat-container:hover {
-            transform: scale(1.05);
-        }
-
-        .cat {
-            font-size: 100px;
-            animation: float 3s ease-in-out infinite;
-            user-select: none;
-            position: relative;
-            z-index: 2;
-        }
-
-        /* 小猫咪手里的花 */
-        .flower-in-hand {
-            position: absolute;
-            font-size: 40px;
-            right: -10px;
-            bottom: 40px;
-            animation: sway 2s ease-in-out infinite;
-            z-index: 3;
-            filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.2));
-        }
-
-        @keyframes sway {
-            0%, 100% { transform: rotate(-5deg); }
-            50% { transform: rotate(5deg); }
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-        }
-
-        /* 喂猫按钮 */
-        .feed-button {
-            background: linear-gradient(135deg, #FF8A65 0%, #FF7043 100%);
-            border: none;
-            border-radius: 50px;
-            padding: 12px 25px;
-            font-size: 16px;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(255, 112, 67, 0.4);
-            transition: all 0.3s ease;
-            margin: 10px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .feed-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(255, 112, 67, 0.5);
-        }
-
-        .feed-button:active {
-            transform: scale(0.95);
-        }
-
-        .feed-button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* 奖励弹出 */
-        .reward-popup {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            background: linear-gradient(135deg, #FFF59D 0%, #FFE082 100%);
-            border-radius: 25px;
-            padding: 30px 40px;
-            box-shadow: 0 20px 50px rgba(255, 193, 7, 0.5);
-            z-index: 1000;
-            text-align: center;
-            opacity: 0;
-            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-
-        .reward-popup.show {
-            transform: translate(-50%, -50%) scale(1);
-            opacity: 1;
-        }
-
-        .reward-amount {
-            font-size: 48px;
-            color: #F57C00;
-            font-weight: bold;
-            margin: 15px 0;
-            animation: bounce 0.5s ease;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-        }
-
-        .reward-text {
-            font-size: 18px;
-            color: #FF8F00;
-            margin-bottom: 10px;
-        }
-
-        .reward-close {
-            background: #FFB300;
-            border: none;
-            border-radius: 20px;
-            padding: 10px 25px;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 15px;
-            transition: all 0.3s ease;
-        }
-
-        .reward-close:hover {
-            background: #FFA000;
-        }
-
-        /* 金币显示 */
-        .coins-display {
-            background: linear-gradient(135deg, #FFD54F 0%, #FFB300 100%);
-            border-radius: 30px;
-            padding: 10px 20px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin: 15px auto;
-            box-shadow: 0 3px 10px rgba(255, 179, 0, 0.3);
-        }
-
-        .coins-icon {
-            font-size: 24px;
-        }
-
-        .coins-amount {
-            font-size: 22px;
-            color: white;
-            font-weight: bold;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-        }
-
-        .heart {
-            position: absolute;
-            font-size: 30px;
-            opacity: 0;
-            animation: heartFloat 2s ease-out forwards;
-            pointer-events: none;
-        }
-
-        @keyframes heartFloat {
-            0% {
-                opacity: 1;
-                transform: translateY(0) scale(0);
-            }
-            50% {
-                opacity: 1;
-                transform: translateY(-50px) scale(1);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(-100px) scale(0.5);
-            }
-        }
-
-        .message-box {
-            background: white;
-            border-radius: 20px;
-            padding: 20px;
-            margin: 20px auto;
-            box-shadow: 0 10px 30px rgba(255, 193, 7, 0.3);
-            max-width: 380px;
-            position: relative;
-        }
-
-        .message-box::before {
-            content: '💛';
-            position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 30px;
-        }
-
-        .message {
-            font-size: 17px;
-            color: #F57C00;
-            line-height: 1.6;
-            margin-bottom: 10px;
-        }
-
-        .click-hint {
-            font-size: 13px;
-            color: #FFB300;
-            opacity: 0.7;
-            margin-top: 8px;
-        }
-
-        .stats {
-            display: flex;
-            justify-content: space-around;
-            margin: 20px auto;
-            max-width: 350px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .stat-item {
-            background: white;
-            border-radius: 15px;
-            padding: 12px 18px;
-            box-shadow: 0 5px 15px rgba(255, 193, 7, 0.2);
-            min-width: 80px;
-        }
-
-        .stat-number {
-            font-size: 22px;
-            color: #F57C00;
-            font-weight: bold;
-        }
-
-        .stat-label {
-            font-size: 11px;
-            color: #FFB300;
-            margin-top: 4px;
-        }
-
-        .floating-elements {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            overflow: hidden;
-            z-index: -1;
-        }
-
-        .floating-item {
-            position: absolute;
-            font-size: 28px;
-            animation: floatRandom 15s infinite;
-            opacity: 0.25;
-        }
-
-        @keyframes floatRandom {
-            0%, 100% {
-                transform: translateY(100vh) rotate(0deg);
-            }
-            50% {
-                transform: translateY(-100px) rotate(180deg);
-            }
-        }
-
-        .secret-message {
-            display: none;
-            background: linear-gradient(135deg, #FFF59D 0%, #FFE082 100%);
-            border-radius: 20px;
-            padding: 25px;
-            margin: 20px auto;
-            box-shadow: 0 10px 30px rgba(255, 193, 7, 0.4);
-            max-width: 380px;
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .secret-title {
-            font-size: 20px;
-            color: #F57C00;
-            font-weight: bold;
-            margin-bottom: 12px;
-        }
-
-        .secret-text {
-            font-size: 15px;
-            color: #FF8F00;
-            line-height: 1.8;
-        }
-
-        .paw-prints {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            font-size: 20px;
-            opacity: 0.3;
-        }
-
-        .sun {
-            position: fixed;
-            top: 30px;
-            right: 30px;
-            font-size: 50px;
-            animation: rotate 20s linear infinite;
-            opacity: 0.6;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .button {
-            background: linear-gradient(135deg, #FFD54F 0%, #FFB300 100%);
-            border: none;
-            border-radius: 25px;
-            padding: 12px 25px;
-            font-size: 15px;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(255, 179, 0, 0.4);
-            transition: all 0.3s ease;
-            margin: 8px;
-        }
-
-        .button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(255, 179, 0, 0.5);
-        }
-
-        .button:active {
-            transform: translateY(0);
-        }
-
-        /* 猫咪吃东西动画 */
-        .cat.eating {
-            animation: eating 0.5s ease;
-        }
-
-        @keyframes eating {
-            0%, 100% { transform: scale(1); }
-            25% { transform: scale(1.1) rotate(-5deg); }
-            50% { transform: scale(1.15); }
-            75% { transform: scale(1.1) rotate(5deg); }
-        }
-
-        /* 食物飞向猫咪 */
-        .food-item {
-            position: absolute;
-            font-size: 30px;
-            z-index: 100;
-            animation: flyToCat 0.8s ease-out forwards;
-        }
-
-        @keyframes flyToCat {
-            0% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(-150px) scale(0.5);
-            }
-        }
-
-        /* 喂食记录 */
-        .feed-history {
-            background: white;
-            border-radius: 15px;
-            padding: 15px;
-            margin: 15px auto;
-            max-width: 380px;
-            box-shadow: 0 5px 15px rgba(255, 193, 7, 0.2);
-        }
-
-        .feed-history-title {
-            font-size: 14px;
-            color: #FF8F00;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-
-        .feed-history-list {
-            font-size: 13px;
-            color: #F57C00;
-            max-height: 100px;
-            overflow-y: auto;
-        }
-
-        .feed-history-item {
-            padding: 5px 0;
-            border-bottom: 1px dashed #FFE082;
-        }
-
-        .feed-history-item:last-child {
-            border-bottom: none;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .show {
-            display: block;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; min-height: 100vh; overflow-x: hidden; position: relative; transition: background 0.5s ease; }
+        body.theme-garden { background: linear-gradient(135deg, #FFF9C4 0%, #FFE082 50%, #FFD54F 100%); }
+        body.theme-trash { background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 50%, #90CAF9 100%); }
+        .theme-switcher { position: fixed; top: 15px; right: 15px; z-index: 1000; display: flex; gap: 8px; }
+        .theme-btn { background: white; border: none; border-radius: 25px; padding: 10px 18px; font-size: 14px; cursor: pointer; box-shadow: 0 3px 10px rgba(0,0,0,0.15); transition: all 0.3s ease; display: flex; align-items: center; gap: 6px; }
+        .theme-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .theme-btn.active { background: linear-gradient(135deg, #FFD54F 0%, #FFB300 100%); color: white; }
+        .theme-btn.active-blue { background: linear-gradient(135deg, #64B5F6 0%, #2196F3 100%); color: white; }
+        .page { display: none; max-width: 500px; margin: 0 auto; padding: 20px; padding-top: 70px; text-align: center; }
+        .page.active { display: block; }
+        .garden-header { margin-bottom: 20px; }
+        .garden-title { font-size: 26px; color: #F57C00; font-weight: bold; text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8); margin-bottom: 10px; }
+        .garden-subtitle { font-size: 15px; color: #FF8F00; opacity: 0.9; }
+        .cat-scene { position: relative; margin: 20px auto; width: 250px; height: 280px; }
+        .cat-container { position: relative; width: 220px; height: 220px; cursor: pointer; transition: transform 0.3s ease; margin: 0 auto; }
+        .cat-container:hover { transform: scale(1.05); }
+        .cat-body { position: absolute; width: 120px; height: 100px; background: linear-gradient(135deg, #FFE0B2 0%, #FFCC80 100%); border-radius: 50% 50% 45% 45%; top: 80px; left: 50px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .cat-head { position: absolute; width: 90px; height: 80px; background: linear-gradient(135deg, #FFE0B2 0%, #FFCC80 100%); border-radius: 50% 50% 45% 45%; top: 30px; left: 65px; box-shadow: 0 3px 10px rgba(0,0,0,0.1); }
+        .cat-ear { position: absolute; width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent; border-bottom: 25px solid #FFCC80; }
+        .cat-ear.left { top: 10px; left: 60px; transform: rotate(-15deg); }
+        .cat-ear.right { top: 10px; left: 130px; transform: rotate(15deg); }
+        .cat-ear-inner { position: absolute; width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-bottom: 15px solid #FFB74D; }
+        .cat-ear-inner.left { top: 15px; left: 67px; transform: rotate(-15deg); }
+        .cat-ear-inner.right { top: 15px; left: 132px; transform: rotate(15deg); }
+        .cat-eye { position: absolute; width: 18px; height: 20px; background: white; border-radius: 50%; top: 55px; }
+        .cat-eye.left { left: 75px; }
+        .cat-eye.right { left: 125px; }
+        .cat-pupil { position: absolute; width: 10px; height: 12px; background: #333; border-radius: 50%; top: 4px; left: 4px; animation: blink 3s infinite; }
+        @keyframes blink { 0%, 90%, 100% { transform: scaleY(1); } 95% { transform: scaleY(0.1); } }
+        .cat-nose { position: absolute; width: 12px; height: 8px; background: #FFB74D; border-radius: 50%; top: 75px; left: 103px; }
+        .cat-mouth { position: absolute; width: 30px; height: 15px; border-bottom: 3px solid #FFB74D; border-radius: 0 0 50% 50%; top: 80px; left: 94px; }
+        .cat-whisker { position: absolute; width: 25px; height: 2px; background: #FFB74D; top: 78px; }
+        .cat-whisker.left1 { left: 50px; transform: rotate(-10deg); }
+        .cat-whisker.left2 { left: 48px; top: 82px; }
+        .cat-whisker.left3 { left: 50px; top: 86px; transform: rotate(10deg); }
+        .cat-whisker.right1 { left: 143px; transform: rotate(10deg); }
+        .cat-whisker.right2 { left: 145px; top: 82px; }
+        .cat-whisker.right3 { left: 143px; top: 86px; transform: rotate(-10deg); }
+        .cat-tail { position: absolute; width: 60px; height: 20px; background: linear-gradient(90deg, #FFCC80 0%, #FFE0B2 100%); border-radius: 20px; top: 140px; left: 25px; transform-origin: right center; animation: tailWag 1s ease-in-out infinite; }
+        @keyframes tailWag { 0%, 100% { transform: rotate(-10deg); } 50% { transform: rotate(10deg); } }
+        .cat-paw { position: absolute; width: 25px; height: 20px; background: #FFE0B2; border-radius: 50%; bottom: 0; }
+        .cat-paw.left { left: 60px; }
+        .cat-paw.right { left: 135px; }
+        .flower-in-hand { position: absolute; font-size: 45px; right: 20px; bottom: 60px; animation: sway 2s ease-in-out infinite; z-index: 3; filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.2)); }
+        @keyframes sway { 0%, 100% { transform: rotate(-5deg); } 50% { transform: rotate(5deg); } }
+        .floating-elements { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; z-index: -1; }
+        .floating-item { position: absolute; font-size: 28px; animation: floatRandom 15s infinite; opacity: 0.25; }
+        @keyframes floatRandom { 0%, 100% { transform: translateY(100vh) rotate(0deg); } 50% { transform: translateY(-100px) rotate(180deg); } }
+        .feed-button { background: linear-gradient(135deg, #FF8A65 0%, #FF7043 100%); border: none; border-radius: 50px; padding: 12px 25px; font-size: 16px; color: white; font-weight: bold; cursor: pointer; box-shadow: 0 5px 15px rgba(255, 112, 67, 0.4); transition: all 0.3s ease; margin: 10px; display: inline-flex; align-items: center; gap: 8px; }
+        .feed-button:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(255, 112, 67, 0.5); }
+        .feed-button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .coins-display { background: linear-gradient(135deg, #FFD54F 0%, #FFB300 100%); border-radius: 30px; padding: 10px 20px; display: inline-flex; align-items: center; gap: 8px; margin: 15px auto; box-shadow: 0 3px 10px rgba(255, 179, 0, 0.3); }
+        .coins-icon { font-size: 24px; }
+        .coins-amount { font-size: 22px; color: white; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
+        .message-box { background: white; border-radius: 20px; padding: 20px; margin: 20px auto; box-shadow: 0 10px 30px rgba(255, 193, 7, 0.3); max-width: 380px; position: relative; }
+        .message-box::before { content: '💛'; position: absolute; top: -15px; left: 50%; transform: translateX(-50%); font-size: 30px; }
+        .message { font-size: 17px; color: #F57C00; line-height: 1.6; margin-bottom: 10px; }
+        .click-hint { font-size: 13px; color: #FFB300; opacity: 0.7; margin-top: 8px; }
+        .stats { display: flex; justify-content: space-around; margin: 20px auto; max-width: 350px; flex-wrap: wrap; gap: 10px; }
+        .stat-item { background: white; border-radius: 15px; padding: 12px 18px; box-shadow: 0 5px 15px rgba(255, 193, 7, 0.2); min-width: 80px; }
+        .stat-number { font-size: 22px; color: #F57C00; font-weight: bold; }
+        .stat-label { font-size: 11px; color: #FFB300; margin-top: 4px; }
+        .reward-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); background: linear-gradient(135deg, #FFF59D 0%, #FFE082 100%); border-radius: 25px; padding: 30px 40px; box-shadow: 0 20px 50px rgba(255, 193, 7, 0.5); z-index: 1000; text-align: center; opacity: 0; transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+        .reward-popup.show { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        .reward-amount { font-size: 48px; color: #F57C00; font-weight: bold; margin: 15px 0; animation: bounce 0.5s ease; }
+        @keyframes bounce { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+        .reward-text { font-size: 18px; color: #FF8F00; margin-bottom: 10px; }
+        .reward-close { background: #FFB300; border: none; border-radius: 20px; padding: 10px 25px; color: white; font-weight: bold; cursor: pointer; margin-top: 15px; transition: all 0.3s ease; }
+        .reward-close:hover { background: #FFA000; }
+        .trash-header { margin-bottom: 20px; }
+        .trash-title { font-size: 26px; color: #1565C0; font-weight: bold; text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8); margin-bottom: 10px; }
+        .trash-subtitle { font-size: 15px; color: #1976D2; opacity: 0.9; }
+        .trash-container { position: relative; margin: 30px auto; width: 200px; height: 250px; }
+        .trash-can { position: relative; width: 140px; height: 180px; margin: 0 auto; cursor: pointer; transition: transform 0.3s ease; }
+        .trash-can:hover { transform: scale(1.05); }
+        .trash-body { position: absolute; width: 120px; height: 140px; background: linear-gradient(135deg, #64B5F6 0%, #42A5F5 100%); border-radius: 10px 10px 20px 20px; bottom: 0; left: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .trash-lid { position: absolute; width: 140px; height: 30px; background: linear-gradient(135deg, #42A5F5 0%, #2196F3 100%); border-radius: 10px 10px 5px 5px; top: 0; left: 0; transform-origin: bottom center; transition: transform 0.3s ease; box-shadow: 0 3px 10px rgba(0,0,0,0.2); }
+        .trash-can.open .trash-lid { transform: rotate(-45deg) translateY(-10px); }
+        .trash-handle { position: absolute; width: 40px; height: 15px; background: #2196F3; border-radius: 10px 10px 0 0; top: -15px; left: 50px; }
+        .trash-lines { position: absolute; width: 100px; height: 100px; top: 30px; left: 20px; }
+        .trash-line { position: absolute; width: 3px; height: 80px; background: rgba(255,255,255,0.3); border-radius: 3px; }
+        .trash-line:nth-child(1) { left: 15px; }
+        .trash-line:nth-child(2) { left: 35px; }
+        .trash-line:nth-child(3) { left: 55px; }
+        .trash-line:nth-child(4) { left: 75px; }
+        .worry-input-container { background: white; border-radius: 20px; padding: 20px; margin: 20px auto; box-shadow: 0 10px 30px rgba(33, 150, 243, 0.3); max-width: 380px; }
+        .worry-input { width: 100%; height: 100px; border: 2px dashed #90CAF9; border-radius: 15px; padding: 15px; font-size: 16px; color: #1565C0; resize: none; outline: none; transition: border-color 0.3s ease; }
+        .worry-input:focus { border-color: #42A5F5; }
+        .worry-input::placeholder { color: #90CAF9; }
+        .throw-button { background: linear-gradient(135deg, #42A5F5 0%, #2196F3 100%); border: none; border-radius: 50px; padding: 15px 30px; font-size: 18px; color: white; font-weight: bold; cursor: pointer; box-shadow: 0 5px 15px rgba(33, 150, 243, 0.4); transition: all 0.3s ease; margin-top: 15px; display: inline-flex; align-items: center; gap: 10px; }
+        .throw-button:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(33, 150, 243, 0.5); }
+        .throw-button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .worry-paper { position: fixed; padding: 10px 15px; background: white; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); font-size: 14px; color: #1565C0; max-width: 200px; z-index: 1000; pointer-events: none; animation: flyToTrash 1s ease-in forwards; }
+        @keyframes flyToTrash { 0% { opacity: 1; transform: scale(1) rotate(0deg); } 50% { opacity: 0.8; transform: scale(0.8) rotate(180deg); } 100% { opacity: 0; transform: scale(0.3) rotate(360deg); } }
+        .healing-message { background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%); border-radius: 20px; padding: 25px; margin: 20px auto; box-shadow: 0 10px 30px rgba(33, 150, 243, 0.3); max-width: 380px; text-align: center; }
+        .healing-text { font-size: 18px; color: #1565C0; line-height: 1.8; }
+        .healing-emoji { font-size: 40px; margin-bottom: 15px; }
+        .worry-history { background: white; border-radius: 15px; padding: 15px; margin: 15px auto; max-width: 380px; box-shadow: 0 5px 15px rgba(33, 150, 243, 0.2); }
+        .worry-history-title { font-size: 14px; color: #1976D2; margin-bottom: 10px; font-weight: bold; }
+        .worry-history-list { font-size: 13px; color: #1565C0; max-height: 100px; overflow-y: auto; }
+        .worry-history-item { padding: 5px 0; border-bottom: 1px dashed #BBDEFB; display: flex; justify-content: space-between; align-items: center; }
+        .worry-history-item:last-child { border-bottom: none; }
+        .worry-count { background: linear-gradient(135deg, #64B5F6 0%, #42A5F5 100%); border-radius: 30px; padding: 10px 20px; display: inline-flex; align-items: center; gap: 8px; margin: 15px auto; box-shadow: 0 3px 10px rgba(33, 150, 243, 0.3); }
+        .worry-count-number { font-size: 22px; color: white; font-weight: bold; }
+        .button { background: linear-gradient(135deg, #FFD54F 0%, #FFB300 100%); border: none; border-radius: 25px; padding: 12px 25px; font-size: 15px; color: white; font-weight: bold; cursor: pointer; box-shadow: 0 5px 15px rgba(255, 179, 0, 0.4); transition: all 0.3s ease; margin: 8px; }
+        .button:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(255, 179, 0, 0.5); }
+        .button-blue { background: linear-gradient(135deg, #64B5F6 0%, #2196F3 100%); box-shadow: 0 5px 15px rgba(33, 150, 243, 0.4); }
+        .button-blue:hover { box-shadow: 0 8px 20px rgba(33, 150, 243, 0.5); }
+        .heart { position: absolute; font-size: 30px; opacity: 0; animation: heartFloat 2s ease-out forwards; pointer-events: none; }
+        @keyframes heartFloat { 0% { opacity: 1; transform: translateY(0) scale(0); } 50% { opacity: 1; transform: translateY(-50px) scale(1); } 100% { opacity: 0; transform: translateY(-100px) scale(0.5); } }
+        .hidden { display: none; }
     </style>
 </head>
-<body>
+<body class="theme-garden">
+    <div class="theme-switcher">
+        <button class="theme-btn active" onclick="switchTheme('garden')">🐱 花园</button>
+        <button class="theme-btn" onclick="switchTheme('trash')">🗑️ 解压</button>
+    </div>
     <div class="floating-elements" id="floatingElements"></div>
-    
-    <div class="sun">☀️</div>
-    
-    <div class="container">
-        <div class="header">
-            <div class="title">🐱 小猫咪的秘密花园 💛</div>
-            <div class="subtitle">点击猫咪互动，喂猫有惊喜！</div>
+    <div class="page active" id="gardenPage">
+        <div class="garden-header">
+            <div class="garden-title">🐱 小猫咪的秘密花园 💛</div>
+            <div class="garden-subtitle">点击猫咪互动，喂猫有惊喜！</div>
         </div>
-
-        <!-- 金币显示 -->
         <div class="coins-display">
             <span class="coins-icon">🪙</span>
             <span class="coins-amount" id="coins">0</span>
         </div>
-
-        <!-- 猫咪场景 - 带花 -->
         <div class="cat-scene">
             <div class="cat-container" id="catContainer" onclick="clickCat()">
-                <div class="cat" id="cat">🐱</div>
+                <div class="cat-ear left"></div>
+                <div class="cat-ear right"></div>
+                <div class="cat-ear-inner left"></div>
+                <div class="cat-ear-inner right"></div>
+                <div class="cat-head"></div>
+                <div class="cat-body"></div>
+                <div class="cat-eye left"><div class="cat-pupil"></div></div>
+                <div class="cat-eye right"><div class="cat-pupil"></div></div>
+                <div class="cat-nose"></div>
+                <div class="cat-mouth"></div>
+                <div class="cat-whisker left1"></div>
+                <div class="cat-whisker left2"></div>
+                <div class="cat-whisker left3"></div>
+                <div class="cat-whisker right1"></div>
+                <div class="cat-whisker right2"></div>
+                <div class="cat-whisker right3"></div>
+                <div class="cat-tail"></div>
+                <div class="cat-paw left"></div>
+                <div class="cat-paw right"></div>
                 <div class="flower-in-hand">🌻</div>
             </div>
         </div>
-
-        <!-- 喂猫按钮 -->
-        <button class="feed-button" id="feedButton" onclick="feedCat()">
-            🐟 喂小猫咪
-        </button>
-
+        <button class="feed-button" id="feedButton" onclick="feedCat()">🐟 喂小猫咪</button>
         <div class="message-box">
-            <div class="message" id="message">
-                嗨！我是小猫咪~<br>
-                我手里拿着向日葵🌻送给你！<br>
-                点击我或者喂我都有惊喜哦！✨
-            </div>
+            <div class="message" id="message">嗨！我是小猫咪~<br>我手里拿着向日葵🌻送给你！<br>点击我或者喂我都有惊喜哦！✨</div>
             <div class="click-hint">已互动 <span id="clickCount">0</span> 次 | 喂食 <span id="feedCount">0</span> 次</div>
         </div>
-
         <div class="stats">
             <div class="stat-item">
                 <div class="stat-number" id="hearts">0</div>
@@ -519,77 +177,88 @@
                 <div class="stat-label">花朵</div>
             </div>
         </div>
-
-        <!-- 喂食记录 -->
-        <div class="feed-history">
-            <div class="feed-history-title">📜 喂食记录</div>
-            <div class="feed-history-list" id="feedHistory">
-                <div style="color: #FFB300; font-size: 12px;">还没有喂过小猫咪哦~</div>
-            </div>
-        </div>
-
-        <div class="secret-message" id="secretMessage">
-            <div class="secret-title">🌟 秘密消息 🌟</div>
-            <div class="secret-text" id="secretText">
-                恭喜你发现了秘密！<br>
-                这个小花园是为你准备的 💛
-            </div>
-        </div>
-
         <button class="button" onclick="changeMessage()">换一条消息</button>
-        <button class="button" onclick="showSecret()">查看秘密</button>
     </div>
-
-    <!-- 奖励弹窗 -->
+    <div class="page" id="trashPage">
+        <div class="trash-header">
+            <div class="trash-title">🗑️ 丢掉烦恼，轻松一下</div>
+            <div class="trash-subtitle">写下你的烦恼，丢进垃圾桶，让它们消失吧！</div>
+        </div>
+        <div class="worry-count">
+            <span style="font-size: 24px;">✨</span>
+            <span class="worry-count-number" id="worryCount">0</span>
+            <span style="color: white; font-size: 14px;">个烦恼已丢掉</span>
+        </div>
+        <div class="trash-container">
+            <div class="trash-can" id="trashCan">
+                <div class="trash-handle"></div>
+                <div class="trash-lid"></div>
+                <div class="trash-body">
+                    <div class="trash-lines">
+                        <div class="trash-line"></div>
+                        <div class="trash-line"></div>
+                        <div class="trash-line"></div>
+                        <div class="trash-line"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="worry-input-container">
+            <textarea class="worry-input" id="worryInput" placeholder="写下你的烦恼...&#10;比如：今天工作好累...&#10;或者：有点担心明天的考试..."></textarea>
+            <button class="throw-button" id="throwButton" onclick="throwWorry()">🗑️ 丢掉烦恼</button>
+        </div>
+        <div class="healing-message" id="healingMessage">
+            <div class="healing-emoji">💙</div>
+            <div class="healing-text" id="healingText">把烦恼写下来，丢进垃圾桶<br>让它们随风而去吧~<br>你值得快乐！✨</div>
+        </div>
+        <div class="worry-history">
+            <div class="worry-history-title">📜 已丢掉的烦恼</div>
+            <div class="worry-history-list" id="worryHistory">
+                <div style="color: #90CAF9; font-size: 12px;">还没有丢掉任何烦恼哦~</div>
+            </div>
+        </div>
+        <button class="button button-blue" onclick="showHealing()">来点治愈</button>
+    </div>
     <div class="reward-popup" id="rewardPopup">
         <div class="reward-text">🎉 恭喜获得奖励！</div>
         <div class="reward-amount" id="rewardAmount">+50</div>
         <div class="reward-text">小猫咪很开心！💛</div>
         <button class="reward-close" onclick="closeReward()">太棒了！</button>
     </div>
-
-    <div class="paw-prints">🐾</div>
-
     <script>
+        let currentTheme = 'garden';
         let clickCount = 0;
         let feedCount = 0;
         let hearts = 0;
         let stars = 0;
         let flowers = 0;
         let coins = 0;
-        let feedHistoryList = [];
-
-        const messages = [
-            "今天也要开心哦！🐱",
-            "你笑起来真好看~",
-            "小猫咪想你了 💛",
-            "今天天气真好，适合想你",
-            "你是最可爱的人！",
-            "小猫咪给你比心~ 💕",
-            "希望你今天也元气满满！",
-            "你值得所有美好的事物 ✨",
-            "小猫咪永远支持你！",
-            "你的笑容是我的阳光 ☀️",
-            "我手里的花送给你！🌻",
-            "谢谢你来看我~"
-        ];
-
-        const secretMessages = [
-            "这个页面是专门为你做的 💛<br>希望你喜欢",
-            "每一只猫咪都代表一个想念<br>点击它们，收获爱",
-            "黄色是温暖的颜色<br>就像你给我的感觉",
-            "小猫咪的秘密：<br>其实我很喜欢你 🐱💕",
-            "这个花园永远为你开放<br>随时欢迎回来",
-            "喂我越多，我越开心！<br>每次都有惊喜哦~"
-        ];
-
-        const foods = ['🐟', '🍖', '🥛', '🍤', '🍗'];
-
-        // 创建漂浮元素
+        let worryCount = 0;
+        let worryHistoryList = [];
+        function switchTheme(theme) {
+            currentTheme = theme;
+            const body = document.body;
+            const gardenPage = document.getElementById('gardenPage');
+            const trashPage = document.getElementById('trashPage');
+            const buttons = document.querySelectorAll('.theme-btn');
+            buttons.forEach(btn => { btn.classList.remove('active', 'active-blue'); });
+            if (theme === 'garden') {
+                body.className = 'theme-garden';
+                gardenPage.classList.add('active');
+                trashPage.classList.remove('active');
+                buttons[0].classList.add('active');
+                updateFloatingElements(['🐱', '💛', '✨', '🌸', '⭐', '🌻', '🦋', '🐝']);
+            } else {
+                body.className = 'theme-trash';
+                gardenPage.classList.remove('active');
+                trashPage.classList.add('active');
+                buttons[1].classList.add('active-blue');
+                updateFloatingElements(['💙', '✨', '🌟', '💫', '⭐', '🌈', '☁️', '🌙']);
+            }
+        }
         function createFloatingElements() {
             const container = document.getElementById('floatingElements');
             const items = ['🐱', '💛', '✨', '🌸', '⭐', '🌻', '🦋', '🐝'];
-            
             for (let i = 0; i < 12; i++) {
                 const item = document.createElement('div');
                 item.className = 'floating-item';
@@ -600,13 +269,24 @@
                 container.appendChild(item);
             }
         }
-
-        // 点击猫咪
+        function updateFloatingElements(items) {
+            const container = document.getElementById('floatingElements');
+            container.innerHTML = '';
+            for (let i = 0; i < 12; i++) {
+                const item = document.createElement('div');
+                item.className = 'floating-item';
+                item.textContent = items[Math.floor(Math.random() * items.length)];
+                item.style.left = Math.random() * 100 + '%';
+                item.style.animationDelay = Math.random() * 15 + 's';
+                item.style.animationDuration = (15 + Math.random() * 10) + 's';
+                container.appendChild(item);
+            }
+        }
+        const messages = ["今天也要开心哦！🐱", "你笑起来真好看~", "小猫咪想你了 💛", "今天天气真好，适合想你", "你是最可爱的人！", "小猫咪给你比心~ 💕", "希望你今天也元气满满！", "你值得所有美好的事物 ✨", "小猫咪永远支持你！", "你的笑容是我的阳光 ☀️", "我手里的花送给你！🌻", "谢谢你来看我~"];
+        const foods = ['🐟', '🍖', '🥛', '🍤', '🍗'];
         function clickCat() {
             clickCount++;
             document.getElementById('clickCount').textContent = clickCount;
-
-            // 随机增加爱心、星星或花朵
             const rand = Math.random();
             if (rand < 0.33) {
                 hearts++;
@@ -621,8 +301,6 @@
                 document.getElementById('flowers').textContent = flowers;
                 createHeart('🌸');
             }
-
-            // 每10次点击显示特殊消息
             if (clickCount % 10 === 0) {
                 const bonusCoins = Math.floor(Math.random() * 20) + 10;
                 coins += bonusCoins;
@@ -630,90 +308,31 @@
                 showMessage("哇！你已经互动了 " + clickCount + " 次！<br>小猫咪奖励你 " + bonusCoins + " 金币！🪙");
             }
         }
-
-        // 喂猫
         function feedCat() {
             feedCount++;
             document.getElementById('feedCount').textContent = feedCount;
-
-            // 禁用按钮防止连续点击
             const btn = document.getElementById('feedButton');
             btn.disabled = true;
-
-            // 显示食物飞向猫咪的动画
             const catContainer = document.getElementById('catContainer');
             const food = document.createElement('div');
             food.className = 'food-item';
             food.textContent = foods[Math.floor(Math.random() * foods.length)];
+            food.style.position = 'absolute';
+            food.style.fontSize = '30px';
             food.style.left = '50%';
             food.style.bottom = '0';
+            food.style.zIndex = '100';
+            food.style.animation = 'flyToTrash 0.8s ease-out forwards';
             catContainer.appendChild(food);
-
-            // 猫咪吃东西动画
-            const cat = document.getElementById('cat');
             setTimeout(() => {
-                cat.classList.add('eating');
-            }, 400);
-
-            setTimeout(() => {
-                cat.classList.remove('eating');
                 food.remove();
                 btn.disabled = false;
             }, 800);
-
-            // 随机奖励 10-100 金币
-            const reward = Math.floor(Math.random() * 91) + 10; // 10-100
+            const reward = Math.floor(Math.random() * 91) + 10;
             coins += reward;
             document.getElementById('coins').textContent = coins;
-
-            // 记录喂食历史
-            const now = new Date();
-            const timeStr = now.getHours().toString().padStart(2, '0') + ':' + 
-                           now.getMinutes().toString().padStart(2, '0') + ':' + 
-                           now.getSeconds().toString().padStart(2, '0');
-            feedHistoryList.unshift({
-                time: timeStr,
-                reward: reward
-            });
-
-            // 只保留最近10条
-            if (feedHistoryList.length > 10) {
-                feedHistoryList.pop();
-            }
-
-            updateFeedHistory();
-
-            // 显示奖励弹窗
             showReward(reward);
         }
-
-        // 更新喂食历史
-        function updateFeedHistory() {
-            const historyDiv = document.getElementById('feedHistory');
-            if (feedHistoryList.length === 0) {
-                historyDiv.innerHTML = '<div style="color: #FFB300; font-size: 12px;">还没有喂过小猫咪哦~</div>';
-            } else {
-                historyDiv.innerHTML = feedHistoryList.map(item => 
-                    `<div class="feed-history-item">${item.time} - 获得 <strong>+${item.reward}</strong> 金币 🪙</div>`
-                ).join('');
-            }
-        }
-
-        // 显示奖励弹窗
-        function showReward(amount) {
-            const popup = document.getElementById('rewardPopup');
-            const amountDiv = document.getElementById('rewardAmount');
-            amountDiv.textContent = '+' + amount;
-            popup.classList.add('show');
-        }
-
-        // 关闭奖励弹窗
-        function closeReward() {
-            const popup = document.getElementById('rewardPopup');
-            popup.classList.remove('show');
-        }
-
-        // 创建飘动的爱心
         function createHeart(emoji) {
             const container = document.getElementById('catContainer');
             const heart = document.createElement('div');
@@ -722,39 +341,78 @@
             heart.style.left = Math.random() * 150 + 'px';
             heart.style.top = Math.random() * 100 + 'px';
             container.appendChild(heart);
-
             setTimeout(() => heart.remove(), 2000);
         }
-
-        // 显示消息
         function showMessage(msg) {
             document.getElementById('message').innerHTML = msg;
         }
-
-        // 换消息
         function changeMessage() {
             const randomMsg = messages[Math.floor(Math.random() * messages.length)];
             showMessage(randomMsg);
         }
-
-        // 显示秘密
-        function showSecret() {
-            const secretDiv = document.getElementById('secretMessage');
-            const secretText = document.getElementById('secretText');
-            
-            if (secretDiv.style.display === 'block') {
-                secretDiv.style.display = 'none';
+        function showReward(amount) {
+            const popup = document.getElementById('rewardPopup');
+            const amountDiv = document.getElementById('rewardAmount');
+            amountDiv.textContent = '+' + amount;
+            popup.classList.add('show');
+        }
+        function closeReward() {
+            const popup = document.getElementById('rewardPopup');
+            popup.classList.remove('show');
+        }
+        const healingMessages = ["烦恼已经丢掉了！<br>深呼吸，你很棒！💙", "一切都会好起来的！<br>相信自己，你值得幸福！✨", "今天的烦恼已经飞走了~<br>明天又是新的一天！🌈", "你已经做得很好了！<br>给自己一个大大的拥抱！🤗", "烦恼只是暂时的，<br>快乐才是永恒的！💛", "把烦恼丢掉，<br>让心里装满阳光！☀️", "你比想象中更坚强！<br>每一次放下都是成长！🌟", "生活总有起伏，<br>但你会越来越好的！💪"];
+        function throwWorry() {
+            const input = document.getElementById('worryInput');
+            const worry = input.value.trim();
+            if (!worry) {
+                alert('请先写下你的烦恼哦~');
+                return;
+            }
+            const trashCan = document.getElementById('trashCan');
+            trashCan.classList.add('open');
+            const paper = document.createElement('div');
+            paper.className = 'worry-paper';
+            paper.textContent = worry.length > 20 ? worry.substring(0, 20) + '...' : worry;
+            paper.style.left = '50%';
+            paper.style.top = '50%';
+            paper.style.transform = 'translate(-50%, -50%)';
+            document.body.appendChild(paper);
+            const btn = document.getElementById('throwButton');
+            btn.disabled = true;
+            setTimeout(() => {
+                paper.remove();
+                trashCan.classList.remove('open');
+                btn.disabled = false;
+                worryCount++;
+                document.getElementById('worryCount').textContent = worryCount;
+                const now = new Date();
+                const timeStr = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+                worryHistoryList.unshift({
+                    time: timeStr,
+                    worry: worry.length > 15 ? worry.substring(0, 15) + '...' : worry
+                });
+                if (worryHistoryList.length > 10) {
+                    worryHistoryList.pop();
+                }
+                updateWorryHistory();
+                showHealing();
+                input.value = '';
+            }, 1000);
+        }
+        function updateWorryHistory() {
+            const historyDiv = document.getElementById('worryHistory');
+            if (worryHistoryList.length === 0) {
+                historyDiv.innerHTML = '<div style="color: #90CAF9; font-size: 12px;">还没有丢掉任何烦恼哦~</div>';
             } else {
-                const randomSecret = secretMessages[Math.floor(Math.random() * secretMessages.length)];
-                secretText.innerHTML = randomSecret;
-                secretDiv.style.display = 'block';
+                historyDiv.innerHTML = worryHistoryList.map(item => '<div class="worry-history-item"><span>' + item.worry + '</span><span style="color: #90CAF9;">' + item.time + '</span></div>').join('');
             }
         }
-
-        // 初始化
+        function showHealing() {
+            const healingText = document.getElementById('healingText');
+            const randomMsg = healingMessages[Math.floor(Math.random() * healingMessages.length)];
+            healingText.innerHTML = randomMsg;
+        }
         createFloatingElements();
-
-        // 显示欢迎消息
         setTimeout(() => {
             showMessage("欢迎来到小猫咪的秘密花园！<br>我手里拿着向日葵🌻送给你~<br>喂我有惊喜哦！");
         }, 1000);
